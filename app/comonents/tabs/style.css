@@ -1,0 +1,32 @@
+.tabs {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    padding: 10px;
+}
+
+.tab {
+    background: #f1f1f1;
+    padding: 10px;
+    border-radius: 4px;
+    cursor: move;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.pinned {
+    background: #d3f5d3;
+    /* Для закрепленных табов */
+}
+
+button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #0073e6;
+}
+
+button:hover {
+    text-decoration: underline;
+}
