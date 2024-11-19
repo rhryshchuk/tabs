@@ -1,23 +1,31 @@
 .tabs {
     display: flex;
     flex-direction: row;
-    gap: 10px;
-    padding: 10px;
+}
+.tab.active {
+    background-color: #F1F5F8;
+    color: #343434;
 }
 
 .tab {
-    background: #f1f1f1;
-    padding: 10px;
-    border-radius: 4px;
+    background-color: #fff;
+    border-right: 1px solid #ccc;
+    color: #7F858D;
     cursor: move;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    width: 145px;
+    height: 48px;
+    padding: 10px;
+}
+
+.tab:last-child {
+    border-right: none;
 }
 
 .pinned {
     background: #d3f5d3;
-    /* Для закрепленных табов */
 }
 
 button {
