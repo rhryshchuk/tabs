@@ -38,7 +38,7 @@ const Tab: React.FC<TabProps> = ({
       className={`tab ${tab.pinned ? "pinned" : ""} ${activeTab === tab.id ? "active" : ""}`}
       style={{
         opacity: tab === draggingTab ? 0.5 : 1,
-        cursor: tab === draggingTab ? "grabbing" : "move",
+        cursor: tab === draggingTab ? "pointer" : "pointer",
       }}
       onClick={onClick}
     >

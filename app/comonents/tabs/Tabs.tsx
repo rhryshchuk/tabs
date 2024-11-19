@@ -1,8 +1,8 @@
 "use client"
 import { loadTabs, saveTabs, removeTab } from "@/app/utils/storage";
 import { useState, useEffect } from "react";
-import Tab from "../tab/Tab";
 import "./style.css";
+import Tab from "../tab/tab";
 
 export interface ITab {
   id: number;
