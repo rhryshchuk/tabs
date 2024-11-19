@@ -28,6 +28,10 @@ export const loadTabs = (): Tab[] => {
         { id: 9, title: "Tab 9", pinned: false },
         { id: 10, title: "Tab 10", pinned: false },
         { id: 11, title: "Tab 11", pinned: false },
+        { id: 12, title: "Tab 12", pinned: false },
+        { id: 13, title: "Tab 13", pinned: false },
+        { id: 14, title: "Tab 14", pinned: false },
+        { id: 15, title: "Tab 15", pinned: false },
       ];
     }
   }

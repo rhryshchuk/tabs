@@ -1,22 +1,22 @@
-"use client";
+"use client"
 import { loadTabs, saveTabs, removeTab } from "@/app/utils/storage";
 import { useState, useEffect } from "react";
-import { TiDelete } from "react-icons/ti";
+import Tab from "../tab/Tab";
 import "./style.css";
 
-interface Tab {
-  id: number;        
-  title: string;     
-  pinned: boolean;   
+export interface ITab {
+  id: number;
+  title: string;
+  pinned: boolean;
 }
 
 const Tabs = () => {
-  const [tabs, setTabs] = useState<Tab[]>([]);           
-  const [draggingTab, setDraggingTab] = useState<Tab | null>(null); 
+  const [tabs, setTabs] = useState<ITab[]>([]);
+  const [draggingTab, setDraggingTab] = useState<ITab | null>(null);
   const [dragDelay, setDragDelay] = useState<boolean>(false);
   const [activeTab, setActiveTab] = useState<number | null>(null);
-    
-    useEffect(() => {
+
+  useEffect(() => {
     const timer = setTimeout(() => {
       setDragDelay(true);
     }, 2000);
@@ -35,35 +35,32 @@ const Tabs = () => {
     saveTabs(tabs);
   }, [tabs]);
 
-  // Обробник для початку перетягування
-  const handleDragStart = (e: React.DragEvent<HTMLDivElement>, tab: Tab) => {
+  const handleDragStart = (e: React.DragEvent<HTMLDivElement>, tab: ITab) => {
     setDraggingTab(tab);
     e.dataTransfer.effectAllowed = "move";
     e.target.style.opacity = "0.5";
   };
 
-  // Обробник для перетягування
-  const handleDragOver = (e: React.DragEvent<HTMLDivElement>,targetTab: Tab) => {
+  const handleDragOver = (e: React.DragEvent<HTMLDivElement>, targetTab: ITab) => {
     e.preventDefault();
-      e.dataTransfer.dropEffect = "move";
-      if (
+    e.dataTransfer.dropEffect = "move";
+    if (
       (targetTab.pinned && draggingTab && !draggingTab.pinned) ||
-      (!targetTab.pinned && draggingTab && draggingTab.pinned) 
+      (!targetTab.pinned && draggingTab && draggingTab.pinned)
     ) {
       e.preventDefault();
     }
   };
 
-  // Обробник для скидання перетягування
-  const handleDrop = (e: React.DragEvent<HTMLDivElement>, targetTab: Tab) => {
+  const handleDrop = (e: React.DragEvent<HTMLDivElement>, targetTab: ITab) => {
     e.preventDefault();
     e.stopPropagation();
 
     if (draggingTab?.id === targetTab.id) return;
-      
+
     if (
-      (targetTab.pinned && draggingTab && !draggingTab.pinned) || 
-      (!targetTab.pinned && draggingTab && draggingTab.pinned) 
+      (targetTab.pinned && draggingTab && !draggingTab.pinned) ||
+      (!targetTab.pinned && draggingTab && draggingTab.pinned)
     ) {
       return;
     }
@@ -80,76 +77,58 @@ const Tabs = () => {
     setDraggingTab(null);
   };
 
-  // Функція для зміни статусу закріплення таба
-  const togglePin = (tab: Tab) => {
+  const togglePin = (tab: ITab) => {
     const newTabs = tabs.map((t) =>
       t.id === tab.id ? { ...t, pinned: !t.pinned } : t
     );
     setTabs(newTabs);
   };
 
-  // Функція для обробки кліку на таб
-  const handleTabClick = (tab: Tab) => {
-    if (activeTab === tab.id) return; 
+  const handleTabClick = (tab: ITab) => {
+    if (activeTab === tab.id) return;
     setActiveTab(tab.id);
-    };
-    
-  const handleRemoveTab = (tabId: number) => {
-    removeTab(tabId);
-    setTabs(tabs.filter(tab => tab.id !== tabId));
   };
 
+  const handleRemoveTab = (tabId: number) => {
+    removeTab(tabId);
+    setTabs(tabs.filter((tab) => tab.id !== tabId));
+  };
 
   return (
     <div className="tabs">
       <div className="pinned-tabs">
         {tabs.filter((tab) => tab.pinned).map((tab) => (
-          <div
+          <Tab
             key={tab.id}
-            draggable={dragDelay}
-            onDragStart={(e) => handleDragStart(e, tab)}
-            onDragOver={(e) => handleDragOver(e, tab)}
-            onDrop={(e) => handleDrop(e, tab)}
-            onDragEnd={handleDragEnd}
-            className={`tab ${tab.pinned ? "pinned" : ""} ${activeTab === tab.id ? "active" : ""}`}
-            style={{
-              opacity: tab === draggingTab ? 0.5 : 1,
-              cursor: tab === draggingTab ? "grabbing" : "move",
-            }}
+            tab={tab}
+            activeTab={activeTab}
+            draggingTab={draggingTab}
             onClick={() => handleTabClick(tab)}
-          >
-            <span>{tab.title}</span>
-            <button onClick={() => togglePin(tab)}>
-              {tab.pinned ? "Unpin" : "Pin"}
-            </button>
-            <button className="remove-tab" onClick={() => handleRemoveTab(tab.id)}><TiDelete/></button>
-          </div>
+            onPinToggle={() => togglePin(tab)}
+            onRemove={() => handleRemoveTab(tab.id)}
+            onDragStart={handleDragStart}
+            onDragOver={handleDragOver}
+            onDrop={handleDrop}
+            onDragEnd={handleDragEnd}
+          />
         ))}
       </div>
 
       <div className="scrollable-tabs">
         {tabs.filter((tab) => !tab.pinned).map((tab) => (
-          <div
+          <Tab
             key={tab.id}
-            draggable={dragDelay}
-            onDragStart={(e) => handleDragStart(e, tab)}
-            onDragOver={(e) => handleDragOver(e, tab)}
-            onDrop={(e) => handleDrop(e, tab)}
-            onDragEnd={handleDragEnd}
-            className={`tab ${tab.pinned ? "pinned" : ""} ${activeTab === tab.id ? "active" : ""}`}
-            style={{
-              opacity: tab === draggingTab ? 0.5 : 1,
-              cursor: tab === draggingTab ? "grabbing" : "move",
-            }}
+            tab={tab}
+            activeTab={activeTab}
+            draggingTab={draggingTab}
             onClick={() => handleTabClick(tab)}
-          >
-            <span>{tab.title}</span>
-            <button onClick={() => togglePin(tab)}>
-              {tab.pinned ? "Unpin" : "Pin"}
-            </button>
-            <button className="remove-tab" onClick={() => handleRemoveTab(tab.id)}><TiDelete/></button>
-
-          </div>
+            onPinToggle={() => togglePin(tab)}
+            onRemove={() => handleRemoveTab(tab.id)}
+            onDragStart={handleDragStart}
+            onDragOver={handleDragOver}
+            onDrop={handleDrop}
+            onDragEnd={handleDragEnd}
+          />
         ))}
       </div>
     </div>
