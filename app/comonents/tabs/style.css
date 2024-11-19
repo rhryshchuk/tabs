@@ -1,10 +1,24 @@
 .tabs {
     display: flex;
     flex-direction: row;
+    flex-wrap: nowrap;
 }
+
+.pinned-tabs {
+    display: flex;
+    white-space: nowrap;
+}
+
+.scrollable-tabs {
+    display: flex;
+    overflow-x: auto;
+    white-space: nowrap;
+}
+
 .tab.active {
     background-color: #F1F5F8;
     color: #343434;
+    border-top: 2px solid #4690E2;
 }
 
 .tab {
@@ -37,4 +51,9 @@ button {
 
 button:hover {
     text-decoration: underline;
+}
+.remove-tab {
+    color: red;
+    height: 13px;
+    width: 13px;
 }

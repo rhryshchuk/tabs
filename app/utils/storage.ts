@@ -26,6 +26,8 @@ export const loadTabs = (): Tab[] => {
         { id: 7, title: "Tab 7", pinned: false },
         { id: 8, title: "Tab 8", pinned: false },
         { id: 9, title: "Tab 9", pinned: false },
+        { id: 10, title: "Tab 10", pinned: false },
+        { id: 11, title: "Tab 11", pinned: false },
       ];
     }
   }
@@ -37,3 +39,18 @@ export const saveTabs = (tabs: Tab[]): void => {
     localStorage.setItem("tabs", JSON.stringify(tabs));
   }
 }
+
+export const removeTab = (tabId: number): void => {
+  if (typeof window !== "undefined") { 
+    const savedTabs = localStorage.getItem("tabs");
+    if (savedTabs) {
+      try {
+        const tabs = JSON.parse(savedTabs) as Tab[];
+        const updatedTabs = tabs.filter(tab => tab.id !== tabId);
+        localStorage.setItem("tabs", JSON.stringify(updatedTabs));
+      } catch (error) {
+        console.error("Error parsing saved tabs from localStorage:", error);
+      }
+    }
+  }
+};
